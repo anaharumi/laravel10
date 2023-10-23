@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  laravel10:
+    build:
+      context: .
+      target: php-base
+    volumes:
+      - ./mycert.crt:/etc/ssl/certs/mycert.crt
+      - ./mycert.key:/etc/ssl/private/mycert.key
+      - ./:/var/www/
+    ports:
+      - "8036:80"
+      - "8037:443"
+    networks:
+      - l10_network
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - l10_network
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    networks:
+      - l10_network
+
+volumes:
+  postgres:
+    driver: local
+
+networks:
+  l10_network:
+    driver: bridge
