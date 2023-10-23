@@ -27,8 +27,7 @@
   @endauth
 
   @guest
-  <h1>Homepage</h1>
-  <p class="lead">Your viewing the home page. Please login to view the restricted data. (0.0.18)</p>
+  <h1>Aqui vai fica o Crud</h1>
   @endguest
 </div>
 @endsection
